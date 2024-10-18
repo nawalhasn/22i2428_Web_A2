@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful, light font */
+            background: linear-gradient(135deg, #ffccff, #ff99cc); /* Soft pastel pinks and purples */
+            color: #ff66b2;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #ff99cc; /* Cotton candy pink */
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar .logo {
+            font-size: 28px;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 50px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px;
+            margin: 15px 0;
+            color: #fff;
+            text-decoration: none;
+            background-color: #ff66b2;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #ffccff; /* Light pastel color hover */
+            transform: scale(1.05);
+        }
+        .sidebar a.active {
+            background-color: #ffb3ff; /* Highlighted with cotton candy vibes */
+            box-shadow: 0 0 15px #ffccff;
+        }
+        .main-content {
+            margin-left: 220px;
+            padding: 20px;
+            width: calc(100% - 220px);
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        h2 {
+            margin-top: 20px;
+            text-align: center;
+            color: #ff66b2; /* Soft pink title */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #fff;
+        }
+        th {
+            background-color: #ff99cc; /* Pink headers */
+            color: #fff;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 204, 255, 0.3); /* Light pastel alternating rows */
+        }
+        tr:hover {
+            background-color: rgba(255, 153, 204, 0.5); /* Highlight row on hover */
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination button {
+            padding: 10px;
+            margin: 0 5px;
+            background-color: #ff99cc;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        .pagination button:hover {
+            background-color: #ffb3ff;
+        }
+        .sort-buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .sort-buttons button {
+            padding: 10px;
+            margin: 0 5px;
+            background-color: #ffccff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #ff66b2;
+            transition: all 0.3s ease;
+        }
+        .sort-buttons button:hover {
+            background-color: #ff99cc;
+        }
+        /* Chatbot Styles */
+        .chatbot {
+            margin-top: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            width: 300px;
+            height: 400px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chatbox {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            border-radius: 10px;
+            background-color: #f8f8f8;
+        }
+        .chatbox .user {
+            color: #ff66b2;
+            margin: 5px 0;
+        }
+        .chatbox .bot {
+            color: #ff99cc;
+            margin: 5px 0;
+        }
+        .chat-input {
+            display: flex;
+            border-top: 1px solid #ccc;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+        }
+        .chat-input button {
+            padding: 10px;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            background-color: #ff99cc;
+            color: #fff;
+            cursor: pointer;
+        }
+        .chat-input button:hover {
+            background-color: #ffb3ff;
+        }
+        /* Search Input and Button Styles */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        #cityInput {
+            padding: 10px;
+            border: none;
+            border-radius: 10px 0 0 10px;
+            font-size: 16px;
+            outline: none;
+        }
+        #getWeatherBtn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 10px 10px 0;
+            background-color: #ff99cc;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        #getWeatherBtn:hover {
+            background-color: #ffb3ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">Weather App</div>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="tables.html" class="active">Tables</a>
+    </div>
+
+    <div class="main-content">
+        <h2>5-Day Weather Forecast</h2>
+        <div class="search-container">
+            <input type="text" id="cityInput" placeholder="Enter city name">
+            <button id="getWeatherBtn">Get Weather</button>
+        </div>
+
+        <div class="sort-buttons">
+            <button id="sortAscBtn">Sort Ascending</button>
+            <button id="sortDescBtn">Sort Descending</button>
+        </div>
+
+        <table id="weatherTable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temperature (°C)</th>
+                    <th>Weather Condition</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <div class="pagination" id="pagination"></div>
+        
+        <!-- Chatbot Section moved below the table -->
+        <div class="chatbot">
+            <div class="chatbox" id="chatbox"></div>
+            <div class="chat-input">
+                <input type="text" id="userInput" placeholder="Type your message...">
+                <button id="sendBtn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = 'd39ad9123f262da6eb750333e99df1bf'; // Replace with your OpenWeather API Key
+        const weatherTableBody = document.querySelector('#weatherTable tbody');
+        const paginationContainer = document.getElementById('pagination');
+        let currentPage = 1;
+        const entriesPerPage = 5;
+        let forecastData = [];
+
+        document.getElementById('getWeatherBtn').addEventListener('click', getWeather);
+        document.getElementById('cityInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                getWeather();
+            }
+        });
+        document.getElementById('sortAscBtn').addEventListener('click', () => sortTable('asc'));
+        document.getElementById('sortDescBtn').addEventListener('click', () => sortTable('desc'));
+
+        function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            if (!city) return;
+
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`)
+                .then(response => {
+                    if (!response.ok) throw new Error('City not found');
+                    return response.json();
+                })
+                .then(data => {
+                    forecastData = data.list.map(entry => ({
+                        date: new Date(entry.dt * 1000).toLocaleDateString(),
+                        temp: entry.main.temp,
+                        weather: entry.weather[0].description
+                    }));
+                    renderTable();
+                    setupPagination();
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        }
+
+        function renderTable() {
+            weatherTableBody.innerHTML = '';
+            const start = (currentPage - 1) * entriesPerPage;
+            const end = start + entriesPerPage;
+            const slicedData = forecastData.slice(start, end);
+
+            slicedData.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.temp.toFixed(1)} °C</td>
+                    <td>${entry.weather}</td>
+                `;
+                weatherTableBody.appendChild(row);
+            });
+        }
+
+        function setupPagination() {
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(forecastData.length / entriesPerPage);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.classList.add('page-button');
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderTable();
+                });
+                paginationContainer.appendChild(button);
+            }
+        }
+
+        function sortTable(order) {
+            if (order === 'asc') {
+                forecastData.sort((a, b) => a.temp - b.temp);
+            } else {
+                forecastData.sort((a, b) => b.temp - a.temp);
+            }
+            currentPage = 1; // Reset to the first page after sorting
+            renderTable();
+            setupPagination();
+        }
+
+        // Chatbot Logic
+    //     document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    //     document.getElementById('userInput').addEventListener('keypress', function(e) {
+    //         if (e.key === 'Enter') {
+    //             sendMessage();
+    //         }
+    //     });
+
+    //     function sendMessage() {
+    //         const userInput = document.getElementById('userInput');
+    //         const message = userInput.value.trim();
+    //         if (message === '') return;
+
+    //         // Display user message
+    //         appendMessage('user', message);
+    //         userInput.value = '';
+
+    //         // Simulate bot response (you can replace this with actual chatbot logic)
+    //         setTimeout(() => {
+    //             const botResponse = `You said: ${message}`; // Here you can add more advanced chatbot logic
+    //             appendMessage('bot', botResponse);
+    //         }, 1000);
+    //     }
+
+    //     function appendMessage(sender, message) {
+    //         const chatbox = document.getElementById('chatbox');
+    //         const msgElement = document.createElement('div');
+    //         msgElement.classList.add(sender);
+    //         msgElement.textContent = message;
+    //         chatbox.appendChild(msgElement);
+    //         chatbox.scrollTop = chatbox.scrollHeight; // Auto-scroll to the bottom
+    //     }
+     </script>
+    <script src = "gemini.js"></script>
+</body>
+</html>

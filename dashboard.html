@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <style>
+        /* Global Styles */
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffccff, #ff99cc); /* Soft pastel pinks and purples */
+            color: #ff66b2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in;
+        }
+    
+        /* Text Gradient (Cotton Candy Typo) */
+        .logo {
+            font-weight: bold;
+            font-size: 28px;
+            color: #ff66b2;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        #logo{
+            max-width:24px;
+        }
+        #cityInput {
+            border-radius: 15px;
+            padding: 10px;
+            border: 1px solid #ff66b2;
+            background-color: #ffccff;
+            color: #ff66b2;
+        }
+    
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    
+        .sidebar {
+            width: 220px;
+            background-color: #ff99cc; /* Cotton candy pink */
+            height: 100vh;
+            padding: 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1);
+        }
+    
+        .sidebar a {
+            display: block;
+            padding: 15px;
+            margin: 20px 0;
+            color: #fff;
+            text-decoration: none;
+            background-color: #ff66b2;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+    
+        .sidebar a:hover {
+            background-color: #ffccff; /* Light pastel color hover */
+            transform: scale(1.05);
+        }
+    
+        .sidebar a.active {
+            background-color: #ffb3ff; /* Highlighted with cotton candy vibes */
+            box-shadow: 0 0 15px #ffccff;
+        }
+    
+        .main-content {
+            margin-left: 240px;
+            padding: 40px;
+            width: calc(100% - 240px);
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            animation: fadeIn 2s ease-in-out;
+        }
+    
+        .weather-widget {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: #ff66b2;
+        }
+    
+        .weather-widget h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #ff66b2;
+        }
+    
+        .weather-widget p {
+            font-size: 22px;
+            margin: 15px 0;
+        }
+    
+        /* Button Styling */
+        #getWeatherBtn {
+            padding: 14px 30px;
+            font-size: 20px;
+            background-color: #ff99cc;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(255, 115, 197, 0.4);
+        }
+    
+        #getWeatherBtn:hover {
+            background-color: #ffb3ff;
+            box-shadow: 0 0 15px rgba(255, 85, 166, 0.5);
+        }
+    
+        /* Charts and Div Shadows */
+        .charts {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+    
+        canvas {
+            width: 30% !important;
+            height: 300px !important;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+    
+        /* Responsive for smaller devices */
+        @media screen and (max-width: 768px) {
+            .sidebar {
+                width: 170px;
+            }
+            .main-content {
+                margin-left: 180px;
+                padding: 20px;
+            }
+            .charts {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    
+        @media screen and (max-width: 480px) {
+            .sidebar {
+                width: 150px;
+            }
+            .main-content {
+                margin-left: 160px;
+            }
+            .weather-widget h2 {
+                font-size: 28px;
+            }
+            .weather-widget p {
+                font-size: 18px;
+            }
+            #getWeatherBtn {
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img id ="logo" src = "logo1.jpg">
+            Weather App
+        </div>
+      <p>ek jhonka hawa ka pyar bhara </p>
+        <a href="dashboard.html" class="active">Dashboard</a>
+        <a href="tables.html">Tables</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header">
+            <input type="text" placeholder="Search for a city..." id="cityInput">
+            <button id="getWeatherBtn">Get Weather</button>
+        </div>
+
+        <div class="weather-widget" id="weatherWidget">
+            <h2 id="cityName">City Name</h2>
+            <div id="weatherDetails">
+                <p>Temperature: <span id="temp"></span></p>
+                <p>Humidity: <span id="humidity"></span></p>
+                <p>Wind Speed: <span id="windSpeed"></span></p>
+                <p>Weather: <span id="weatherDescription"></span></p>
+            </div>
+        </div>
+
+        <div class="charts">
+            <canvas id="barChart"></canvas>
+            <canvas id="doughnutChart"></canvas>
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+
+    <div id="loadingSpinner" style="display:none;">Loading...</div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const apiKey = 'd39ad9123f262da6eb750333e99df1bf'; // Replace with your OpenWeather API key
+        const apiBaseUrl = 'https://api.openweathermap.org/data/2.5';
+        
+        // DOM Elements
+        const cityInput = document.getElementById('cityInput');
+        const getWeatherBtn = document.getElementById('getWeatherBtn');
+        const weatherWidget = document.getElementById('weatherWidget');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        
+        // Chatbot elements
+        const userInput = document.getElementById('userInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const chatbox = document.getElementById('chatbox');
+
+        // Chart instances
+        let barChartInstance, doughnutChartInstance, lineChartInstance;
+
+        // Event listener for the Get Weather button
+        getWeatherBtn.addEventListener('click', () => {
+            const city = cityInput.value.trim();
+            if (city) {
+                // Store the city name in localStorage for access across pages
+                localStorage.setItem('selectedCity', city);
+                fetchWeatherData(city);
+            } else {
+                alert('Please enter a city name');
+            }
+        });
+
+        // Event listener for the Enter key in the input field
+        cityInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                getWeatherBtn.click(); // Trigger the button click
+            }
+        });
+
+        // Load the city from localStorage if available and fetch its weather
+        window.onload = () => {
+            const savedCity = localStorage.getItem('selectedCity');
+            if (savedCity) {
+                cityInput.value = savedCity;
+                fetchWeatherData(savedCity);
+            }
+        };
+
+        // Fetch current weather and forecast data
+        async function fetchWeatherData(city) {
+            loadingSpinner.style.display = 'block';
+            const weatherUrl = `${apiBaseUrl}/weather?q=${city}&appid=${apiKey}&units=metric`;
+            const forecastUrl = `${apiBaseUrl}/forecast?q=${city}&appid=${apiKey}&units=metric`;
+
+            try {
+                const [currentData, forecastData] = await Promise.all([
+                    fetch(weatherUrl).then(response => response.json()),
+                    fetch(forecastUrl).then(response => response.json())
+                ]);
+
+                if (currentData.cod === '404' || forecastData.cod === '404') {
+                    alert('City not found. Please try again.');
+                    return;
+                }
+
+                displayCurrentWeather(currentData);
+                const processedData = processForecastData(forecastData);
+                displayWeatherCharts(processedData);
+            } catch (error) {
+                alert(`Error fetching weather data: ${error.message}`);
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        }
+
+        // Display current weather details
+        function displayCurrentWeather(data) {
+            const { name, main, weather, wind } = data;
+            document.getElementById('cityName').textContent = name;
+            document.getElementById('temp').textContent = `${Math.round(main.temp)}°C`;
+            document.getElementById('humidity').textContent = `${main.humidity}%`;
+            document.getElementById('windSpeed').textContent = `${Math.round(wind.speed)} m/s`;
+            document.getElementById('weatherDescription').textContent = weather[0].description;
+        }
+
+        // Process forecast data for chart display
+        function processForecastData(forecastData) {
+            const labels = [];
+            const temperatures = [];
+            const humidity = [];
+            const windSpeeds = [];
+            
+            forecastData.list.forEach(entry => {
+                const date = new Date(entry.dt * 1000);
+                const formattedDate = date.toLocaleString('en-US', { weekday: 'long' });
+                labels.push(formattedDate);
+                temperatures.push(entry.main.temp);
+                humidity.push(entry.main.humidity);
+                windSpeeds.push(entry.wind.speed);
+            });
+
+            return { labels, temperatures, humidity, windSpeeds };
+        }
+
+        // Display weather charts
+        function displayWeatherCharts({ labels, temperatures, humidity, windSpeeds }) {
+            const chartColors = {
+                bar: 'rgba(255, 99, 132, 0.6)',
+                doughnut: 'rgba(54, 162, 235, 0.6)',
+                line: 'rgba(255, 206, 86, 0.6)',
+            };
+
+            // Bar Chart
+            if (barChartInstance) barChartInstance.destroy();
+            barChartInstance = new Chart(document.getElementById('barChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Temperature (°C)',
+                        data: temperatures,
+                        backgroundColor: chartColors.bar,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Doughnut Chart
+            if (doughnutChartInstance) doughnutChartInstance.destroy();
+            doughnutChartInstance = new Chart(document.getElementById('doughnutChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Humidity', 'Wind Speed'],
+                    datasets: [{
+                        data: [humidity[0], windSpeeds[0]],
+                        backgroundColor: [chartColors.doughnut, 'rgba(75, 192, 192, 0.6)'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                    },
+                }
+            });
+
+            // Line Chart
+            if (lineChartInstance) lineChartInstance.destroy();
+            lineChartInstance = new Chart(document.getElementById('lineChart'), {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Wind Speed (m/s)',
+                        data: windSpeeds,
+                        backgroundColor: chartColors.line,
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        fill: true,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

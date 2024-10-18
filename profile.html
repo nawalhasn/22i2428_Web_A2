@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <div class="profile-box">
+        <div class="profile-image-container" onclick="toggleLogin()">
+            <img src="profile.png" alt="Profile" class="profile-image">
+        </div>
+        <div class="content-box">
+            <h1>Welcome to the Weather App</h1>
+            <p>Please click your profile picture to proceed.</p>
+            <div class="login-options" id="loginOptions" style="display: none;">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button class="btn login-btn" id="loginButton">Login</button>
+                <p id="errorMessage" style="color: red; display: none;"></p>
+            </div>
+            <div class="navigation-options" id="navigationOptions" style="display: none;">
+                <a href="dashboard.html" class="btn nav-btn">Dashboard</a>
+                <a href="tables.html" class="btn nav-btn">Tables</a>
+                <button class="btn back-btn" onclick="goBack()">Back</button>
+            </div>
+        </div>
+    </div>
+    <!-- Add your background GIF here -->
+
+    <script src="script.js"></script>
+</body>
+</html>
